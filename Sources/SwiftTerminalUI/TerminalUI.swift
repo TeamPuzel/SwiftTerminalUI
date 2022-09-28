@@ -22,8 +22,13 @@ public extension App {
 func tick() {
     let window = getWindowSize()
     
+    render(window: window)
     
-    
+}
+
+func render(window: CACoordinates) {
+    erase(.screen)
+    resetCursor()
 }
 
 // figure this (and result builders) out later

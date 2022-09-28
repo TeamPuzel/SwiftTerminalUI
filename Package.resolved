@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "coreansi",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/TeamPuzel/CoreANSI.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "b105940c7f5bdd4b7e18438d5d6e84a9a0a7372b"
+      }
+    }
+  ],
+  "version" : 2
+}
