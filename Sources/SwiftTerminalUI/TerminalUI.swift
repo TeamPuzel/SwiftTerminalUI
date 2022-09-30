@@ -13,7 +13,7 @@ public protocol App {
     
 }
 
-@available(macOS 10.15, *)
+@available(macOS 13, *)
 public extension App {
     static func main() async {
         var tick = 0 {
@@ -23,7 +23,7 @@ public extension App {
         }
         while true {
             tick += 1
-            try! await Task.sleep(nanoseconds: 100)
+            try! await Task.sleep(for: .milliseconds(13.7))
         }
     }
 }
