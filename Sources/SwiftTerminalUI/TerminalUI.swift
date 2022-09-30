@@ -13,17 +13,25 @@ public protocol App {
     
 }
 
+@available(macOS 10.15, *)
 public extension App {
-    static func main() {
-        
+    static func main() async {
+        var tick = 0 {
+            didSet {
+                tickAction(count: tick)
+            }
+        }
+        while true {
+            tick += 1
+            try! await Task.sleep(nanoseconds: 100)
+        }
     }
 }
 
-func tick() {
+func tickAction(count: Int) {
     let window = getWindowSize()
-    
     render(window: window)
-    
+    print(count)
 }
 
 func render(window: CACoordinates) {
