@@ -29,7 +29,6 @@ public extension App {
             }
         }
         signal(SIGINT) { _ in handleSIGINT() }
-        privateMode(.saveScreen)
         privateMode(.invisibleCursor)
         privateMode(.enableAlternativeBuffer)
         while true {
@@ -47,8 +46,14 @@ func tickAction(count: Int) {
 
 func render(window: CACoordinates) {
     erase(.screen)
-    erase(.savedLines)
     resetCursor()
+}
+
+func handleSIGINT() {
+    erase(.screen)
+    privateMode(.disableAlternativeBuffer)
+    privateMode(.visibleCursor)
+    exit(0)
 }
 
 // figure this (and result builders) out later
@@ -56,12 +61,4 @@ func render(window: CACoordinates) {
 struct State {
     var wrappedValue: Any
     
-}
-
-func handleSIGINT() {
-    erase(.screen); erase(.savedLines)
-    privateMode(.disableAlternativeBuffer)
-    privateMode(.loadScreen)
-    privateMode(.visibleCursor)
-    exit(0)
 }
