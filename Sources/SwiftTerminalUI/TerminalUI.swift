@@ -8,6 +8,13 @@
 //
 
 import CoreANSI
+#if os(macOS)
+import Darwin
+#elseif os(Linux)
+import Glibc
+#elseif os(Windows)
+#error("Windows not supported")
+#endif
 
 public protocol App {
     
@@ -21,6 +28,10 @@ public extension App {
                 tickAction(count: tick)
             }
         }
+        signal(SIGINT) { _ in handleSIGINT() }
+        privateMode(.saveScreen)
+        privateMode(.invisibleCursor)
+        privateMode(.enableAlternativeBuffer)
         while true {
             tick += 1
             try! await Task.sleep(for: .milliseconds(13.7))
@@ -36,6 +47,7 @@ func tickAction(count: Int) {
 
 func render(window: CACoordinates) {
     erase(.screen)
+    erase(.savedLines)
     resetCursor()
 }
 
@@ -44,4 +56,12 @@ func render(window: CACoordinates) {
 struct State {
     var wrappedValue: Any
     
+}
+
+func handleSIGINT() {
+    erase(.screen); erase(.savedLines)
+    privateMode(.disableAlternativeBuffer)
+    privateMode(.loadScreen)
+    privateMode(.visibleCursor)
+    exit(0)
 }
